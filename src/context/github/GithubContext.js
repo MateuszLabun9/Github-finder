@@ -13,20 +13,27 @@ export const GithubProvider = ({ children }) => {
 
   const [state, dispatch] = useReducer(githubReducer, initialState);
 
-  const clearUsers = () => dispatch({type: 'CLEAR_USERS'})
+  const clearUsers = () => dispatch({ type: "CLEAR_USERS" });
 
   const searchUsers = async (text) => {
     const params = new URLSearchParams({
-      q: text
-    })
-    
+      q: text,
+    });
+
     const response = await fetch(`${GITHUB_URL}/search/users?${params}`);
 
-    const {items} = await response.json(); //De-structurize to get just the items from response
+    const { items } = await response.json(); //De-structurize to get just the items from response
     dispatch({ type: "GET_USERS", payload: items });
   };
   return (
-    <GithubContext.Provider value={{ users: state.users, loading: state.loading, searchUsers, clearUsers }}>
+    <GithubContext.Provider
+      value={{
+        users: state.users,
+        loading: state.loading,
+        searchUsers,
+        clearUsers,
+      }}
+    >
       {children}
     </GithubContext.Provider>
   );
